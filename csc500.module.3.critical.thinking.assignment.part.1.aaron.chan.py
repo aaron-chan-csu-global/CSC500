@@ -36,7 +36,7 @@ def get_meal_amount_input(input_message_prompt):
 # ------------------------------------------------
 # Method to calculate and return tuple values of both tips amount and sales tax amount, based on the input values of meal_amount and the corresponding tips % and sales tax %
 # ------------------------------------------------
-def calculate_sales_tax_and_tips(meal_amount, tips_rate, sales_tax_rate):
+def calculate_tips_and_sales_tax(meal_amount, tips_rate, sales_tax_rate):
 
     # calculate the tips amount based on multiple the meal amount with the tips rate
     calculated_tips = meal_amount * tips_rate
@@ -65,11 +65,11 @@ def main(configured_tips = 0.18, configured_sales_tax = 0.07):
 
 
     # ------------------------------------------------
-    # Determining the tips amount and sales amount leveraging the method get_tips_and_sales_tax_amount().
+    # Determining the tips amount and sales amount leveraging the method calculate_tips_and_sales_tax().
     # ------------------------------------------------
 
     # Obtaining the calculated tips and sales tax amount based on the meal amount and the configured tips and sales tax rate.
-    calculated_sales_tax, calculated_tips = calculate_sales_tax_and_tips(total_meal_amount, configured_tips, configured_sales_tax)
+    calculated_sales_tax, calculated_tips = calculate_tips_and_sales_tax(total_meal_amount, configured_tips, configured_sales_tax)
 
     # Calculate total amount
     total_adjusted_meal_amount = total_meal_amount + calculated_sales_tax + calculated_tips
