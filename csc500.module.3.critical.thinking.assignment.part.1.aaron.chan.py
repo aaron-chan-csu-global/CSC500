@@ -34,7 +34,7 @@ def get_meal_amount_input(input_message_prompt):
 
 
 # ------------------------------------------------
-# Method to calculate and return tuple values of both tips amount and sales tax amount, based on the input values of meal_amount and the corresponding tips % and sales tax %
+# Method to calculate and return as two-element List values of both tips amount and sales tax amount, based on the input values of meal_amount and the corresponding tips % and sales tax %
 # ------------------------------------------------
 def calculate_tips_and_sales_tax(meal_amount, tips_rate, sales_tax_rate):
 
@@ -44,7 +44,7 @@ def calculate_tips_and_sales_tax(meal_amount, tips_rate, sales_tax_rate):
     # calculate the sales tax amount using formula of multiplying the pre-tipped meal amount with the sales tax rate
     calculated_sales_tax = meal_amount * sales_tax_rate
 
-    # returning the tips and sales tax amount as tuple
+    # returning the tips and sales tax amount as a two-element List, or essentially also a Tuple
     return (calculated_tips, calculated_sales_tax)
 
 # ------------------------------------------------
@@ -69,7 +69,12 @@ def main(configured_tips = 0.18, configured_sales_tax = 0.07):
     # ------------------------------------------------
 
     # Obtaining the calculated tips and sales tax amount based on the meal amount and the configured tips and sales tax rate.
-    calculated_sales_tax, calculated_tips = calculate_tips_and_sales_tax(total_meal_amount, configured_tips, configured_sales_tax)
+    # alternative tuple assignment ---- calculated_tips, calculated_sales_tax = calculate_tips_and_sales_tax(total_meal_amount, configured_tips, configured_sales_tax)
+    tips_and_sales_list = calculate_tips_and_sales_tax(total_meal_amount, configured_tips, configured_sales_tax)
+
+    calculated_tips = tips_and_sales_list[0] # first element of the List
+    calculated_sales_tax = tips_and_sales_list[1] # second element of the List
+    
 
     # Calculate total amount
     total_adjusted_meal_amount = total_meal_amount + calculated_sales_tax + calculated_tips
