@@ -14,6 +14,7 @@
 # Modification Log:
 # - 2/2/2025 Initiated.
 # - 2/2/2025 Add code comments.
+# - 2/2/2025 Independent validation method "calculate_alarm_go_off_time_independent_validation()" is added to provide cross comparison between List-driven Alarm go-off time and alternative-logic driven Alarm go-off time.
 # ------------------------------------------------
 
 
@@ -70,11 +71,46 @@ def get_12hour_time_from_23hour_time(current_24hour_time):
     ) + " "  + get_hour_am_pm_label(current_24hour_time)
 
 
+           
 # ------------------------------------------------
-# Method to calculate and return the time (in 24-hours format) when the alarm is expected to go off, based on the input value of current time and countdown time provided by the user.
+# Method to calculate and return the time when the alarm is expected to go off, using lists.
 # - input parameter 1: input_message_prompt. Expecting a message to be used for the input prompt, assigned with a default value.
 # ------------------------------------------------
 def calculate_alarm_go_off_time(current_time, countdown_time):
+
+    # Initiating a List containing countdown_time number of elements, starting from 1, incrementing through the countdown_time value
+    list_countdown_time_increment = list(range(1, countdown_time + 1))
+
+    # Initiating a List to capture progressiong in time since current_time, in 24 hour format. Time is appropriately "reset" with every turn of 24 hour using modulus calculation (to obtain its remainder)
+    list_alarm_time_increment_24hr_format = [(current_time + x) % 24 for x in list_countdown_time_increment]
+
+    # Initiating a List to convert the 24-hour time in list_alarm_time_increment_24hr_format to a 12-hour format for better readability.
+    list_alarm_time_increment_12hr_format = [get_12hour_time_from_23hour_time(x) for x in list_alarm_time_increment_24hr_format]
+
+
+    # --------------------------------
+    
+    # get 12-hour time format for current time for better readability
+    current_time_in_12hour_format = get_12hour_time_from_23hour_time(current_time)
+
+    # Convert countdown_time duration to day-and-hour format for better readability, leveraging divisor and modulus calculation
+    countdown_days_and_time_to_elapse = str(countdown_time // 24) + " day(s) and " + str(countdown_time % 24) + " hour(s)"
+
+    # Displaying all input info:
+    print("\nYou've entered:")
+    print(f"\nCurrent time: {current_time_in_12hour_format}")
+    print(f"Alarm countdown time: {countdown_time} hours")
+
+    # Finally, display the calculated alarm setoff time. The last element in the full incremented List "list_alarm_time_increment_12hr_format" represents the Alarm go-off time.
+    print(f"\n\nThe alarm will go off in {countdown_days_and_time_to_elapse}, at {list_alarm_time_increment_12hr_format[-1]}.")
+
+
+# ------------------------------------------------
+# Method to calculate and return the time (in 24-hours format) when the alarm is expected to go off, based on the input value of current time and countdown time provided by the user.
+# This is an independent validation module to result returned by "calculate_alarm_go_off_time()", using alternative, non-List driven method
+# - input parameter 1: input_message_prompt. Expecting a message to be used for the input prompt, assigned with a default value.
+# ------------------------------------------------
+def calculate_alarm_go_off_time_independent_validation(current_time, countdown_time):
     # get 12-hour time format for current time
     current_time_in_12hour_format = get_12hour_time_from_23hour_time(current_time)
     
@@ -82,8 +118,7 @@ def calculate_alarm_go_off_time(current_time, countdown_time):
     alarm_go_off_exact_time_in_24hour_format = (current_time + countdown_time) % 24
     alarm_go_off_exact_time_in_12hour_format = get_12hour_time_from_23hour_time(alarm_go_off_exact_time_in_24hour_format)
 
-
-    countdown_days_and_time_to_elapse = str(countdown_time % 24) + " day(s) and " + str(countdown_time // 24) + " hour(s)"
+    countdown_days_and_time_to_elapse = str(countdown_time // 24) + " day(s) and " + str(countdown_time % 24) + " hour(s)"
 
     # Displaying all input info as well as the final calculated alarm setoff time.
     print("\nYou've entered:")
@@ -91,7 +126,6 @@ def calculate_alarm_go_off_time(current_time, countdown_time):
     print(f"Alarm countdown time: {countdown_time} hours")    
     print(f"\n\nThe alarm will go off in {countdown_days_and_time_to_elapse}, at {alarm_go_off_exact_time_in_12hour_format}.")
 
-           
 
 
 # ------------------------------------------------
@@ -124,9 +158,11 @@ def main():
         print("\nProgram terminated.")
         return
 
-
+    # calculating and display the alarm go-off time leveraing a method
     calculate_alarm_go_off_time(current_time_in_hour, countdown_to_alarm_in_hour)
 
+    #independent validation (uncomment as needed)
+    # calculate_alarm_go_off_time_independent_validation(current_time_in_hour, countdown_to_alarm_in_hour)
 
 
 # program main construct
