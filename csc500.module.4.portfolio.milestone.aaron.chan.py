@@ -57,9 +57,11 @@ if __name__ ==  '__main__':
 
   # iterating through the total items to prompt, and invoke the prompt to capture information from the user
   for prompt in range(0, total_items_to_prompt):
-    purchase_item_name = input("Enter the item name: ")
-    purchase_item_price = input("Enter the item price: ")
-    purchase_item_quantity = input("Enter the item quantity: ")
+    print() # printing an empty line to give some UI row spacing
+    
+    purchase_item_name = input("Enter the item name (e.g.: Apple): ")
+    purchase_item_price = input("Enter the item price (e.g.: 2.99): ")
+    purchase_item_quantity = input("Enter the item quantity (e.g.: 10): ")
 
     # creating a dictionary "item_data_dict"" capturing name, price and quantity of current item
     item_data_dict = {
